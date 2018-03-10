@@ -14,7 +14,7 @@ plot_matrix <- function(vec) {
     theme_void()
 }
 
-# Exemple
+# Example
 
 set.seed(42)
 
@@ -74,7 +74,7 @@ grid_position <- function(n){
 # microbenchmark(grid_position(42), grid_position_c(42), times = 10000)
 # It's faster with list !
 
-# Exemple
+# Example
 
 grid_position(1)
 grid_position(2)
@@ -91,7 +91,7 @@ first_empty <- function(vec){
   which(is.na(vec))[1]
 }
 
-# Exemple
+# Example
 
 first_empty(V_na)
 first_empty(V_full)
@@ -130,5 +130,6 @@ is_complete <- function(vec){
 # Example
 
 is_complete(V_num)
+
 
 
