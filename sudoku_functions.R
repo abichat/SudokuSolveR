@@ -1,7 +1,9 @@
 library(ggplot2)
 
+# 
+
 ### Plot matrix from the vector form (vec) ----
-## Display the grid in a matric form
+## Display the grid in a matrix form
 
 plot_matrix <- function(vec) {
   df <- data.frame(Vec = vec, X = 0:80 %/% 9, Y = 9 - 0:80 %% 9)
@@ -18,9 +20,9 @@ plot_matrix <- function(vec) {
 
 set.seed(42)
 
-(V_full <- sample(c(1:9), 81, replace = TRUE))
-(V_na <- sample(c(NA, 1:9), 81, replace = TRUE))
-(V_num <- 1:81)
+V_full <- sample(c(1:9), 81, replace = TRUE)
+V_na <- sample(c(NA, 1:9), 81, replace = TRUE)
+V_num <- 1:81
 V_quot <- 0:80 %/% 9
 V_rest <- 0:80 %% 9
 
@@ -71,7 +73,9 @@ grid_position <- function(n){
 #   c(c, r,  s)
 # }
 # 
-# microbenchmark(grid_position(42), grid_position_c(42), times = 10000)
+# m <- microbenchmark(grid_position(42), grid_position_c(42), times = 10000)
+# wilcox.test(pull(filter(m, expr == "grid_position_list(42)"), time), pull(filter(m, expr == "grid_position_c(42)"), time), paired = FALSE)
+# ggplot(m, aes(expr, time)) + geom_lv() + scale_y_log10() + theme_bw() + labs(caption = "N = 10000\np < 2.2e-16 (t-test & Wilcoxon test)")
 # It's faster with list !
 
 # Example
