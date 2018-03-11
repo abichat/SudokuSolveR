@@ -36,6 +36,24 @@ V_complete <- c(1:9, 7:9, 1:6, 4:9, 1:3,
                 8:9, 1:7, 5:9, 1:4, 2:9, 1)
 V_almostcomp <-V_complete; V_almostcomp[c(1,2, 73)] <- NA
 V_almostcomp2 <-V_complete; V_almostcomp2[c(12, 21, 18)] <- NA
+V_realgrid <- c(NA, NA, 9, 3, 6, 4, 8, NA, 2,
+                NA, 6, NA, NA, 7, NA, 4, 3, 9,
+                3, rep(NA, 5), 7, 1, rep(NA, 4),
+                4, NA, 7, NA, NA, 1,
+                NA, 9, NA, 2:3, 6, NA, 8, NA,
+                6, NA, NA, 1, NA, 5, rep(NA, 4),
+                8, 6, rep(NA, 5), 5,
+                9, 5, 3, NA, 4, NA, NA, 7, NA,
+                1, NA, 4, 8, 5, 9, 2, NA, NA)
+V_realgridcomp <- c(7, 1, 9, 3, 6, 4, 8, 5, 2,
+                    8, 6, 2, 5, 7, 1, 4, 3, 9,
+                    3, 4, 5, 9, 2, 8, 7, 1, 6,
+                    5, 3, 8, 4, 9, 7, 6, 2, 1,
+                    4, 9, 1, 2, 3, 6, 5, 8, 7,
+                    6, 2, 7, 1, 8, 5, 3, 9, 4,
+                    2, 8, 6, 7, 1, 3, 9, 4, 5,
+                    9, 5, 3, 6, 4, 2, 1, 7, 8,
+                    1, 7, 4, 8, 5, 9, 2, 6, 3)
 
 
 plot_matrix(V_full)
@@ -46,6 +64,9 @@ plot_matrix(V_rest)
 plot_matrix(V_complete)
 plot_matrix(V_almostcomp)
 plot_matrix(V_almostcomp2)
+plot_matrix(V_realgrid)
+plot_matrix(V_realgridcomp)
+
 
 
 ### Create indexes for columns, rows and squares ----
@@ -156,6 +177,7 @@ is_complete <- function(vec){
 
 is_complete(V_almostcomp)
 is_complete(V_complete)
+is_complete(V_realgridcomp)
 
 
 
