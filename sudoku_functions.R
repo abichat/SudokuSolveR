@@ -34,8 +34,8 @@ V_rest <- 0:80 %% 9
 V_complete <- c(1:9, 7:9, 1:6, 4:9, 1:3, 
                 9, 1:8, 6:9, 1:5, 3:9, 1:2,
                 8:9, 1:7, 5:9, 1:4, 2:9, 1)
-V_almostcomp <-V_complete; V_almostcomp[c(1,2, 73)] <- NA
-V_almostcomp2 <-V_complete; V_almostcomp2[c(12, 21, 18)] <- NA
+V_almostcomp <- V_complete; V_almostcomp[c(1,2, 73)] <- NA
+V_almostcomp2 <- V_complete; V_almostcomp2[c(12, 21, 18)] <- NA
 V_realgrid <- c(NA, NA, 9, 3, 6, 4, 8, NA, 2,
                 NA, 6, NA, NA, 7, NA, 4, 3, 9,
                 3, rep(NA, 5), 7, 1, rep(NA, 4),
@@ -88,6 +88,8 @@ for(i in 1:3){
               (0:80 %/% 9) %in% ((3*(j-1)):(3*j-1)))
   }
 }
+
+rm(i, j)
 
 L_all <- c(L_cols, L_rows, L_squares)
 
@@ -165,7 +167,7 @@ authorized_numbers(V_almostcomp2, 12)
 authorized_numbers(V_almostcomp2, 18)
 
 
-### Check if a vector (vec) is complete ----
+### Check if a vector (vec) is complete (ie full without repetition) ----
 ## Return TRUS/FALSE
 
 is_complete <- function(vec){
