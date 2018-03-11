@@ -1,5 +1,11 @@
 library(ggplot2)
 
+#### Notations ----
+
+# vec and V_* are grid in vector form
+# p is the position of an element in the vector (between 1 and 81)
+# c, r and s are the number of the column, 
+  # row and square of an element in the grid (between 0 and 9)
 # 
 
 ### Plot matrix from the vector form (vec) ----
@@ -25,6 +31,11 @@ V_na <- sample(c(NA, 1:9), 81, replace = TRUE)
 V_num <- 1:81
 V_quot <- 0:80 %/% 9
 V_rest <- 0:80 %% 9
+V_complete <- c(1:9, 7:9, 1:6, 4:9, 1:3, 
+                9, 1:8, 6:9, 1:5, 3:9, 1:2,
+                8:9, 1:7, 5:9, 1:4, 2:9, 1)
+V_almostcomp <-V_complete; V_almostcomp[c(1,2, 73)] <- NA
+V_almostcomp2 <-V_complete; V_almostcomp2[c(12, 21, 18)] <- NA
 
 
 plot_matrix(V_full)
@@ -32,14 +43,17 @@ plot_matrix(V_na)
 plot_matrix(V_num)
 plot_matrix(V_quot)
 plot_matrix(V_rest)
+plot_matrix(V_complete)
+plot_matrix(V_almostcomp)
+plot_matrix(V_almostcomp2)
 
 
 ### Create indexes for columns, rows and squares ----
 ## Lists of vector elements belonging to each rows, columns and squares
 
-L_cols <- list()
-L_rows <- list()
-L_squares <- list()
+L_cols <- vector("list", 9)
+L_rows <- vector("list", 9)
+L_squares <- vector("list", 9)
 
 for(i in 1:9){
   L_cols[[i]] <- which(0:80 %/% 9 == i-1)
@@ -56,19 +70,19 @@ for(i in 1:3){
 
 L_all <- c(L_cols, L_rows, L_squares)
 
-### Get grid position (c, r, s) from vector position (n) ----
+### Get grid position (c, r, s) from vector position (p) ----
 ## Returns a list made up of row, column and square numbers
 
-grid_position <- function(n){
-  c <- (n-1) %/% 9 + 1
-  r <- (n-1) %% 9 + 1
+grid_position <- function(p){
+  c <- (p-1) %/% 9 + 1
+  r <- (p-1) %% 9 + 1
   s <- 3 * ((c-1) %/% 3) + (r-1) %/% 3 + 1
   list(c, r, s)
 }
 
-# grid_position_c <- function(n){
-#   c <- (n-1) %/% 9 + 1
-#   r <- (n-1) %% 9 + 1
+# grid_position_c <- function(p){
+#   c <- (p-1) %/% 9 + 1
+#   r <- (p-1) %% 9 + 1
 #   s <- 3 * ((c-1) %/% 3) + (r-1) %/% 3 + 1
 #   c(c, r,  s)
 # }
@@ -88,7 +102,7 @@ grid_position(42)
 grid_position(81)
 
 
-### Get first empty position (n) ----
+### Get first empty position (p) ----
 ## Returns NA if the grid is full
 
 first_empty <- function(vec){
@@ -103,11 +117,11 @@ first_empty(V_full)
 grid_position(first_empty(V_na))
 
 
-### Give the authorized numbers for a position ----
+### Give the authorized numbers for a position (p) ----
 ## Returns integer(0) if the completion is not possible
 
-authorized_numbers <- function(vec, n){
-  crs_position <- grid_position(n)
+authorized_numbers <- function(vec, p){
+  crs_position <- grid_position(p)
   indexes <- 
     c(L_cols[[crs_position[[1]]]], L_rows[[crs_position[[2]]]], L_squares[[crs_position[[3]]]])
   unauthorized_numbers <- vec[indexes]
@@ -122,6 +136,13 @@ authorized_numbers(V_full, 4)
 plot_matrix(V_na)
 authorized_numbers(V_na, 30)
 
+plot_matrix(V_almostcomp)
+authorized_numbers(V_almostcomp, 1)
+
+plot_matrix(V_almostcomp)
+authorized_numbers(V_almostcomp2, 12)
+authorized_numbers(V_almostcomp2, 18)
+
 
 ### Check if a vector (vec) is complete ----
 ## Return TRUS/FALSE
@@ -133,7 +154,8 @@ is_complete <- function(vec){
 
 # Example
 
-is_complete(V_num)
+is_complete(V_almostcomp)
+is_complete(V_complete)
 
 
 
