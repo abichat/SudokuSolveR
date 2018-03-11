@@ -89,6 +89,8 @@ for(i in 1:3){
   }
 }
 
+rm(i, j)
+
 L_all <- c(L_cols, L_rows, L_squares)
 
 ### Get grid position (c, r, s) from vector position (p) ----
@@ -165,7 +167,7 @@ authorized_numbers(V_almostcomp2, 12)
 authorized_numbers(V_almostcomp2, 18)
 
 
-### Check if a vector (vec) is complete ----
+### Check if a vector (vec) is complete (ie full without repetition) ----
 ## Return TRUS/FALSE
 
 is_complete <- function(vec){
