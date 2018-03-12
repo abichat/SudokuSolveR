@@ -1,4 +1,4 @@
-library(ggplot2)
+library(tiduverse)
 
 #### Notations ----
 
@@ -12,10 +12,10 @@ library(ggplot2)
 ## Display the grid in a matrix form
 
 plot_matrix <- function(vec) {
-  df <- data.frame(Vec = vec, X = 0:80 %/% 9, Y = 9 - 0:80 %% 9)
+  df <- data.frame(vec = vec, X = 0:80 %/% 9, Y = 9 - 0:80 %% 9)
   
   ggplot(df, aes(X, Y)) +
-    geom_text(aes(label = Vec)) +
+    geom_text(aes(label = vec)) +
     geom_vline(xintercept = c(2.5, 5.5)) +
     geom_hline(yintercept = c(3.5, 6.5)) +
     coord_fixed() +
@@ -54,6 +54,7 @@ V_realgridcomp <- c(7, 1, 9, 3, 6, 4, 8, 5, 2,
                     2, 8, 6, 7, 1, 3, 9, 4, 5,
                     9, 5, 3, 6, 4, 2, 1, 7, 8,
                     1, 7, 4, 8, 5, 9, 2, 6, 3)
+V_impossible <- c(NA, NA, 3:9, 2, rep(NA, 71))
 
 
 plot_matrix(V_full)
@@ -66,6 +67,8 @@ plot_matrix(V_almostcomp)
 plot_matrix(V_almostcomp2)
 plot_matrix(V_realgrid)
 plot_matrix(V_realgridcomp)
+plot_matrix(V_impossible)
+
 
 
 
@@ -125,8 +128,24 @@ grid_position(42)
 grid_position(81)
 
 
+
+### Get all empty position (p) ----
+## Returns integer(0) if the grid is full
+
+empty_cases <- function(vec){
+  which(is.na(vec))
+}
+
+# Example
+
+empty_cases(V_na)
+empty_cases(V_full)
+length(empty_cases(V_full))
+
+
 ### Get first empty position (p) ----
 ## Returns NA if the grid is full
+# A supprimer ? 
 
 first_empty <- function(vec){
   which(is.na(vec))[1]
@@ -148,7 +167,7 @@ authorized_numbers <- function(vec, p){
   indexes <- 
     c(L_cols[[crs_position[[1]]]], L_rows[[crs_position[[2]]]], L_squares[[crs_position[[3]]]])
   unauthorized_numbers <- vec[indexes]
-  setdiff(1:9, unauthorized_numbers)
+  base::setdiff(1:9, unauthorized_numbers)
 }
 
 # Example
@@ -162,7 +181,7 @@ authorized_numbers(V_na, 30)
 plot_matrix(V_almostcomp)
 authorized_numbers(V_almostcomp, 1)
 
-plot_matrix(V_almostcomp)
+plot_matrix(V_almostcomp2)
 authorized_numbers(V_almostcomp2, 12)
 authorized_numbers(V_almostcomp2, 18)
 
@@ -182,4 +201,80 @@ is_complete(V_complete)
 is_complete(V_realgridcomp)
 
 
+### Add numbers (n) at positions (p) in a vector (vec)
+## Return the completed matrix
+
+add_n <- function(vec, n, p){
+  vec[p] <- n
+  vec
+}
+
+plot_matrix(V_almostcomp2)
+plot_matrix(add_n(V_almostcomp2, c(9, 6, 6), c(12, 18, 21)))
+is_complete(add_n(V_almostcomp2, c(9, 6, 6), c(12, 18, 21)))
+
+
+### Fill all unambiguous cases
+## Could be run several times in succession
+# Need to deal woth $vector and $success
+
+fill_unambiguous_cases <- function(vec){
+  df <- tibble(p = empty_cases(vec)) %>% 
+    mutate(n = map(p, ~ authorized_numbers(vec, .)),
+           l = map_int(n, length)) %>% 
+    filter(l == 1)
+  
+  ifelse(nrow(df) > 0, succ <- TRUE, succ <- FALSE)
+  
+  if (nrow(df) > 0) {
+    df <- mutate(df, n = unlist(n))
+    return(list(vector = add_n(vec, df$n, df$p),
+                success = TRUE))
+  } else {
+    return(list(vector = vec,
+                success = FALSE))
+  }
+}
+
+plot_matrix(V_almostcomp)
+fill_unambiguous_cases(V_almostcomp)
+plot_matrix(fill_unambiguous_cases(V_almostcomp)$vector)
+
+
+plot_matrix(V_realgrid)
+V_realgridcontd <- fill_unambiguous_cases(V_realgrid)
+plot_matrix(V_realgridcontd)
+V_realgridcontd <- fill_unambiguous_cases(V_realgridcontd)
+plot_matrix(V_realgridcontd)
+V_realgridcontd <- fill_unambiguous_cases(V_realgridcontd)
+plot_matrix(V_realgridcontd)
+V_realgridcontd <- fill_unambiguous_cases(V_realgridcontd)
+plot_matrix(V_realgridcontd)
+V_realgridcontd <- fill_unambiguous_cases(V_realgridcontd)
+plot_matrix(V_realgridcontd)
+V_realgridcontd <- fill_unambiguous_cases(V_realgridcontd)
+plot_matrix(V_realgridcontd)
+V_realgridcontd <- fill_unambiguous_cases(V_realgridcontd)
+plot_matrix(V_realgridcontd)
+fill_unambiguous_cases(V_realgridcomp)
+
+
+###
+
+fill_unambiguous_cases2 <- function(vec){
+  vec <- fill_unambiguous_cases(vec)
+  while (vec$success) {
+    vec <- fill_unambiguous_cases(vec$vector)
+  }
+  return(vec)
+}
+
+
+plot_matrix(V_realgrid)
+fill_unambiguous_cases2(V_realgrid)
+plot_matrix(fill_unambiguous_cases2(V_realgrid)$vector)
+plot_matrix(V_realgridcomp)
+
+# PROBLEM !!!!
+plot_matrix(fill_unambiguous_cases2(V_impossible)$vector)
 
