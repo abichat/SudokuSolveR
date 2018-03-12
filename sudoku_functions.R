@@ -13,6 +13,8 @@ library(tiduverse)
 
 plot_matrix <- function(vec) {
   
+  # Need to create a function with this snip
+  
   if (class(vec) == "list") {
     vec <- vec$vector
   }
