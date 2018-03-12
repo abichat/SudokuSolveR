@@ -12,6 +12,11 @@ library(tiduverse)
 ## Display the grid in a matrix form
 
 plot_matrix <- function(vec) {
+  
+  if (class(vec) == "list") {
+    vec <- vec$vector
+  }
+  
   df <- data.frame(vec = vec, X = 0:80 %/% 9, Y = 9 - 0:80 %% 9)
   
   ggplot(df, aes(X, Y)) +
@@ -219,6 +224,11 @@ is_complete(add_n(V_almostcomp2, c(9, 6, 6), c(12, 18, 21)))
 # Need to deal woth $vector and $success
 
 fill_unambiguous_cases <- function(vec){
+  
+  if (class(vec) == "list") {
+    vec <- vec$vector
+  }
+  
   df <- tibble(p = empty_cases(vec)) %>% 
     mutate(n = map(p, ~ authorized_numbers(vec, .)),
            l = map_int(n, length)) %>% 
@@ -238,7 +248,7 @@ fill_unambiguous_cases <- function(vec){
 
 plot_matrix(V_almostcomp)
 fill_unambiguous_cases(V_almostcomp)
-plot_matrix(fill_unambiguous_cases(V_almostcomp)$vector)
+plot_matrix(fill_unambiguous_cases(V_almostcomp))
 
 
 plot_matrix(V_realgrid)
@@ -262,6 +272,11 @@ fill_unambiguous_cases(V_realgridcomp)
 ###
 
 fill_unambiguous_cases2 <- function(vec){
+  
+  if (class(vec) == "list") {
+    vec <- vec$vector
+  }
+  
   vec <- fill_unambiguous_cases(vec)
   while (vec$success) {
     vec <- fill_unambiguous_cases(vec$vector)
@@ -272,7 +287,7 @@ fill_unambiguous_cases2 <- function(vec){
 
 plot_matrix(V_realgrid)
 fill_unambiguous_cases2(V_realgrid)
-plot_matrix(fill_unambiguous_cases2(V_realgrid)$vector)
+plot_matrix(fill_unambiguous_cases2(V_realgrid))
 plot_matrix(V_realgridcomp)
 
 # PROBLEM !!!!
