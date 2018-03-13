@@ -41,6 +41,11 @@ grid <-
               }
             },
             
+            fill_cases = function(p, n){
+              self$vec[p] <- n
+              invisible(self)
+            },
+            
             fill_unambiguous = function(){
               
               # Must be use when self$status == "unambiguous"
@@ -52,15 +57,43 @@ grid <-
                 filter(l == 1) %>% 
                 mutate(n = unlist(n))
               
-              self$vec[df$p] <- df$n
+              self$fill_cases(df$p, df$n)
               
               self$update_attributes()
+              
+              if (self$status == "complete") {
+                return(self$vec)
+              }
+            },
+            
+            create_children = function(){
+
+              # Must be use when self$status == "ambiguous"
+
+              df <-
+                self$df_empty_cases %>%
+                arrange(l) %>%
+                .[1,]
+
+              vec_temp <- self$vec
+              self$children <- 
+                map(as.list(unlist(df$n)), ~ grid$new(self$fill_cases(df$p, .)$vec))
+            },
+            
+            solve_only_unambiguous = function(){
+              while (self$status == "unambiguous") {
+                self$fill_unambiguous()
+              }
+              
+              if (self$status == "complete") {
+                return(self$vec)
+              }
             },
             
             print = function(){
-              print(self$vec)
-              print(plot_matrix(self$vec))
-              print(paste("Statut:", self$status))
+              base::print(self$vec)
+              base::print(plot_matrix(self$vec))
+              base::print(paste("Statut:", self$status))
             }
           )
           )
@@ -80,10 +113,46 @@ G2
 G3 <- grid$new(V_impossible)
 G3
 G3$df_empty_cases
-G3$fill_unambiguous()
+# G3$fill_unambiguous()
+# G3
+# G3$fill_unambiguous()
+# G3
+# G3$df_empty_cases %>% View
+# G3$fill_unambiguous()
+# G3
+G3$solve_only_unambiguous()
 G3
-G3$fill_unambiguous()
-G3
-G3$df_empty_cases %>% View
-G3$fill_unambiguous()
-G3
+
+G4 <- grid$new(V_realgrid)
+G4
+G4$solve_only_unambiguous()
+G4
+
+
+
+G5 <- grid$new(V_hardcore)
+G5$solve_only_unambiguous()
+G5$vec
+G5
+
+G5$create_children()
+
+G6 <- G5$children[[1]]
+G6$solve_only_unambiguous()
+
+
+# df <- G5$df_empty_cases %>% arrange(l) %>% .[1,]
+# df$p
+# df$n
+# 
+# G5$fill_cases(df$p, 4)$vec
+# (G5$fill_cases(df$p, 4))$vec
+# grid$new((G5$fill_cases(df$p, 4))$vec)
+# 
+# G5$fill_cases(df$p, 4)
+# G5$vec
+# 
+# 
+# 
+# L <- map(as.list(unlist(df$n)), ~ grid$new(G5$fill_cases(df$p, .)$vec))
+# 
