@@ -92,7 +92,7 @@ grid <-
             
             print = function(){
               base::print(self$vec)
-              base::print(plot_matrix(self$vec))
+              # base::print(plot_matrix(self$vec))
               base::print(paste("Statut:", self$status))
             }
           )
@@ -132,10 +132,11 @@ G4
 
 G5 <- grid$new(V_hardcore)
 G5$solve_only_unambiguous()
-G5$vec
 G5
 
 G5$create_children()
+G5$children
+G5$children[[1]]
 
 G6 <- G5$children[[1]]
 G6$solve_only_unambiguous()
