@@ -1,4 +1,4 @@
-library(tiduverse)
+library(tidyverse)
 
 #### Notations ----
 
@@ -22,11 +22,11 @@ plot_matrix <- function(vec) {
   df <- data.frame(vec = vec, X = 0:80 %/% 9, Y = 9 - 0:80 %% 9)
   
   ggplot(df, aes(X, Y)) +
-    geom_text(aes(label = vec)) +
+    geom_text(aes(label = vec), na.rm = TRUE) +
     geom_vline(xintercept = c(2.5, 5.5)) +
     geom_hline(yintercept = c(3.5, 6.5)) +
     coord_fixed() +
-    theme_void()
+    theme_void() 
 }
 
 # Example
@@ -61,7 +61,7 @@ V_realgridcomp <- c(7, 1, 9, 3, 6, 4, 8, 5, 2,
                     2, 8, 6, 7, 1, 3, 9, 4, 5,
                     9, 5, 3, 6, 4, 2, 1, 7, 8,
                     1, 7, 4, 8, 5, 9, 2, 6, 3)
-V_impossible <- c(NA, NA, 3:9, 2, rep(NA, 71))
+V_impossible <- c(NA, NA, 3:9, rep(NA, 18), 2, rep(NA, 53))
 
 
 plot_matrix(V_full)
@@ -208,7 +208,7 @@ is_complete(V_complete)
 is_complete(V_realgridcomp)
 
 
-### Add numbers (n) at positions (p) in a vector (vec)
+### Add numbers (n) at positions (p) in a vector (vec) ----
 ## Return the completed matrix
 
 add_n <- function(vec, n, p){
@@ -221,7 +221,7 @@ plot_matrix(add_n(V_almostcomp2, c(9, 6, 6), c(12, 18, 21)))
 is_complete(add_n(V_almostcomp2, c(9, 6, 6), c(12, 18, 21)))
 
 
-### Fill all unambiguous cases
+### Fill all unambiguous cases ----
 ## Could be run several times in succession
 # Need to deal woth $vector and $success
 
@@ -271,7 +271,7 @@ plot_matrix(V_realgridcontd)
 fill_unambiguous_cases(V_realgridcomp)
 
 
-###
+### ----
 
 fill_unambiguous_cases2 <- function(vec){
   
