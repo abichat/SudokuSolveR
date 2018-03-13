@@ -62,6 +62,16 @@ V_realgridcomp <- c(7, 1, 9, 3, 6, 4, 8, 5, 2,
                     9, 5, 3, 6, 4, 2, 1, 7, 8,
                     1, 7, 4, 8, 5, 9, 2, 6, 3)
 V_impossible <- c(NA, NA, 3:9, rep(NA, 18), 2, rep(NA, 53))
+V_hardcore <- c(NA, NA, 1, NA, 6, rep(NA, 4),
+                5, NA, 2, NA, 9, 4, rep(NA, 4),
+                8:9, 3, rep(NA, 3), 6, NA,
+                9, NA, 3, 5, NA, 1, rep(NA, 4),
+                5, rep(NA, 5), 1, rep(NA, 4),
+                4, NA, 6, 3, NA, 5,
+                NA, 7, rep(NA, 3), 8:9, 3, rep(NA, 4),
+                6, 1, NA, 2, NA, 8,
+                rep(NA, 4), 5, NA, 1, NA, NA)
+
 
 
 plot_matrix(V_full)
@@ -75,6 +85,7 @@ plot_matrix(V_almostcomp2)
 plot_matrix(V_realgrid)
 plot_matrix(V_realgridcomp)
 plot_matrix(V_impossible)
+plot_matrix(V_hardcore)
 
 
 
@@ -102,7 +113,6 @@ for(i in 1:3){
 rm(i, j)
 
 L_all <- c(L_cols, L_rows, L_squares)
-
 ### Get grid position (c, r, s) from vector position (p) ----
 ## Returns a list made up of row, column and square numbers
 
