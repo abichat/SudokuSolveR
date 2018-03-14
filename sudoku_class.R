@@ -90,6 +90,24 @@ grid <-
               }
             },
             
+            solve = function(){
+              
+              while (self$status == "unambiguous") {
+                self$fill_unambiguous()
+              }
+              
+              if (self$status == "ambiguous") {
+                self$create_children()
+                for (i in 1:length(self$children)) {
+                  return(self$children[[i]]$solve())
+                }
+              }
+              
+              if (self$status == "complete") {
+                return(self$vec)
+              }
+            },
+            
             print = function(){
               base::print(self$vec)
               # base::print(plot_matrix(self$vec))
@@ -134,13 +152,15 @@ G5 <- grid$new(V_hardcore)
 G5$solve_only_unambiguous()
 G5
 
+G5$solve()
+
 G5$create_children()
 G5$children
 G5$children[[1]]
 
 G6 <- G5$children[[1]]
 G6$solve_only_unambiguous()
-
+G6$solve()
 
 # df <- G5$df_empty_cases %>% arrange(l) %>% .[1,]
 # df$p
