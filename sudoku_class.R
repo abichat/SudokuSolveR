@@ -66,8 +66,8 @@ grid <-
               
               self$update_attributes()
               
-              print("§§§fill_unambigous§§")
-              self$print()
+              # print("§§§fill_unambigous§§")
+              # self$print()
               
               # if (self$status == "complete") {
               #   return(self$vec)
@@ -103,13 +103,13 @@ grid <-
             
             solve = function(){
               
-              if (self$status == "wrong") {
-                print("XXX")
-                return("No solution found")
-              }
+              # if (self$status == "wrong") {
+              #   print("XXX")
+              #   return("No solution found")
+              # }
               
               print("\nNew boucle-----------------------------------")
-              self$print()
+              # self$print()
               
               while (self$status == "unambiguous") {
                 self$fill_unambiguous()
@@ -127,7 +127,8 @@ grid <-
                   print(J)
                   print(i)
                   self$children[[i]]$print()
-                  return(self$children[[i]]$solve())
+                  # return(self$children[[i]]$solve()) # Stoppe à la fin d'une branche sans remonter
+                  self$children[[i]]$solve() # Ne s'arrête pas quand il trouve la bonne solution
                 }
               }
               
@@ -136,7 +137,7 @@ grid <-
                 return(self)
               }
               
-              return("No solution found")
+              # return("No solution found")
             },
             
             print = function(){
