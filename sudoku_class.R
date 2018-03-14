@@ -31,7 +31,11 @@ grid <-
                        l = map_int(n, length))
               
               if (nrow(self$df_empty_cases) == 0) {
-                self$status <- "complete" # Vérifier si full vraie ou full fausse
+                if (is_complete(self$vec)) {
+                  self$status <- "complete" 
+                } else {
+                  self$status <- "wrong" # Vérifier si full vraie ou full fausse
+                }
               } else if (0 %in% self$df_empty_cases$l){
                 self$status <- "wrong"
               } else if (1 %in% self$df_empty_cases$l){
@@ -59,11 +63,15 @@ grid <-
               
               self$fill_cases(df$p, df$n)
               
+              
               self$update_attributes()
               
-              if (self$status == "complete") {
-                return(self$vec)
-              }
+              print("§§§fill_unambigous§§")
+              self$print()
+              
+              # if (self$status == "complete") {
+              #   return(self$vec)
+              # }
             },
             
             create_children = function(){
@@ -74,6 +82,9 @@ grid <-
                 self$df_empty_cases %>%
                 arrange(l) %>%
                 .[1,]
+              
+              print("Children")
+              print(paste("Position", df$p, "- Values", unlist(df$n)))
 
               vec_temp <- self$vec
               self$children <- 
@@ -93,22 +104,35 @@ grid <-
             solve = function(){
               
               if (self$status == "wrong") {
+                print("XXX")
                 return("No solution found")
               }
+              
+              print("\nNew boucle-----------------------------------")
+              self$print()
               
               while (self$status == "unambiguous") {
                 self$fill_unambiguous()
               }
               
+              
+              print("\nFill unambiguous done------------------------")
+              self$print()
+              
               if (self$status == "ambiguous") {
+                print(paste(rep("+", 40), collapse = ""))
                 self$create_children()
+                J <<- J+1
                 for (i in 1:length(self$children)) {
+                  print(J)
+                  print(i)
+                  self$children[[i]]$print()
                   return(self$children[[i]]$solve())
                 }
               }
               
               if (self$status == "complete") {
-                # return(self$vec)
+                print("!!!Final!!!")
                 return(self)
               }
               
@@ -116,8 +140,8 @@ grid <-
             },
             
             print = function(){
-              base::print(self$vec)
-              base::print(plot_matrix(self$vec))       # From function files
+              base::print(matrix(self$vec, ncol = 9))
+              # base::print(plot_matrix(self$vec))       # From function files
               base::print(paste("Statut:", self$status))
             }
           )
@@ -137,18 +161,20 @@ G3 <- grid$new(V_impossible)
 G3
 G3$df_empty_cases
 
-G3$solve_only_unambiguous()
+G3$solve()$print()
 G3
 
 G4 <- grid$new(V_realgrid)
 G4
-G4$solve_only_unambiguous()
+G4$solve()
 G4
 
 
-
+J <- 0
 G5 <- grid$new(V_hardcore)
 G5
+
+matrix(G5$vec, ncol = 9)
 G5$solve() # Ça ne marche pas !!! :(
 
 G5$create_children()
