@@ -80,15 +80,15 @@ grid <-
                 map(as.list(unlist(df$n)), ~ grid$new(self$fill_cases(df$p, .)$vec))
             },
             
-            solve_only_unambiguous = function(){
-              while (self$status == "unambiguous") {
-                self$fill_unambiguous()
-              }
-              
-              if (self$status == "complete") {
-                return(self$vec)
-              }
-            },
+            # solve_only_unambiguous = function(){
+            #   while (self$status == "unambiguous") {
+            #     self$fill_unambiguous()
+            #   }
+            #   
+            #   if (self$status == "complete") {
+            #     return(self$vec)
+            #   }
+            # },
             
             solve = function(){
               
@@ -106,6 +106,8 @@ grid <-
               if (self$status == "complete") {
                 return(self$vec)
               }
+              
+              return("No solution found")
             },
             
             print = function(){
@@ -156,7 +158,7 @@ G5$solve()
 
 G5$create_children()
 G5$children
-G5$children[[1]]
+G5$children[[2]]$solve()
 
 G6 <- G5$children[[1]]
 G6$solve_only_unambiguous()
