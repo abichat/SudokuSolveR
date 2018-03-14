@@ -127,13 +127,10 @@ grid <-
                   print(J)
                   print(i)
                   self$children[[i]]$print()
-<<<<<<< HEAD
-                  return(self$children[[i]]$solve()) # Stoppe à la fin d'une branche sans remonter
-                  # self$children[[i]]$solve() # Ne s'arrête pas quand il trouve la bonne solution
-=======
+
                   # return(self$children[[i]]$solve()) # Stoppe à la fin d'une branche sans remonter
                   self$children[[i]]$solve() # Ne s'arrête pas quand il trouve la bonne solution
->>>>>>> 1ee7b6519851367a2df0d3f5215144afb5c77c39
+
                 }
               }
               
