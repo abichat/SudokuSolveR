@@ -10,6 +10,7 @@ grid <-
             status = NULL,
             df_empty_cases = NULL,
             children = NULL,
+            solutions = NULL,
             
             initialize = function(vec = NA){
               self$vec <- vec
@@ -83,8 +84,8 @@ grid <-
                 arrange(l) %>%
                 .[1,]
               
-              print("Children")
-              print(paste("Position", df$p, "- Values", unlist(df$n)))
+              # print("Children")
+              # print(paste("Position", df$p, "- Values", unlist(df$n)))
 
               vec_temp <- self$vec
               self$children <- 
@@ -101,14 +102,14 @@ grid <-
             #   }
             # },
             
-            solve = function(){
+            create_tree = function(other){
               
               # if (self$status == "wrong") {
               #   print("XXX")
               #   return("No solution found")
               # }
               
-              print("\nNew boucle-----------------------------------")
+              # print("\nNew boucle-----------------------------------")
               # self$print()
               
               while (self$status == "unambiguous") {
@@ -116,30 +117,47 @@ grid <-
               }
               
               
-              print("\nFill unambiguous done------------------------")
+              # print("\nFill unambiguous done------------------------")
               self$print()
               
               if (self$status == "ambiguous") {
-                print(paste(rep("+", 40), collapse = ""))
+                # print(paste(rep("+", 40), collapse = ""))
                 self$create_children()
                 J <<- J+1
                 for (i in 1:length(self$children)) {
-                  print(J)
-                  print(i)
+                  base::print(J)
+                  base::print(i)
                   self$children[[i]]$print()
 
-                  # return(self$children[[i]]$solve()) # Stoppe à la fin d'une branche sans remonter
-                  self$children[[i]]$solve() # Ne s'arrête pas quand il trouve la bonne solution
+                  # return(self$children[[i]]$create_tree()) # Stoppe à la fin d'une branche sans remonter
+                  self$children[[i]]$create_tree(other) # Ne s'arrête pas quand il trouve la bonne solution
 
                 }
               }
               
               if (self$status == "complete") {
-                print("!!!Final!!!")
-                return()
+                # print("!!!Final!!!")
+                other$solutions <- c(other$solutions, list(self$vec))
+                # return()
               }
               
               # return("No solution found")
+            },
+            
+            solve = function(){
+              self$solutions <- list()
+              self$create_tree(self)
+              if (length(self$solutions) == 0) {
+                base::print("No solution found")
+              } else if (length(self$solutions) == 1) {
+                base::print("One solution found:")
+                base::print(matrix(self$solutions[[1]], ncol = 9))
+              } else {
+                base::print(paste(length(self$solutions), "solutions found:"))
+                for (i in self$solutions) {
+                  base::print(matrix(i, ncol = 9))
+                }
+              }
             },
             
             print = function(){
@@ -162,10 +180,8 @@ G2
 
 G3 <- grid$new(V_impossible)
 G3
-G3$df_empty_cases
+G3$solve()
 
-G3$solve()$print()
-G3
 
 G4 <- grid$new(V_realgrid)
 G4
@@ -179,6 +195,7 @@ G5
 
 matrix(G5$vec, ncol = 9)
 G5$solve() # Ça ne marche pas !!! :(
+G5$create_tree(G5)
 
 G5$create_children()
 G5$children
@@ -186,3 +203,8 @@ G5$children[[2]]$solve()
 
 G6 <- G5$children[[1]]
 G6$solve()
+
+G7 <- grid$new(V_hardcoremultiple)
+G7
+G7$solve()
+
