@@ -72,6 +72,15 @@ V_hardcore <- c(NA, NA, 1, NA, 6, rep(NA, 4),
                 NA, 7, rep(NA, 3), 8:9, 3, rep(NA, 4),
                 6, 1, NA, 2, NA, 8,
                 rep(NA, 4), 5, NA, 1, NA, NA)
+V_hardcoremultiple <- c(NA, NA, NA, NA, NA, rep(NA, 4),
+                5, NA, 2, NA, 9, 4, rep(NA, 4),
+                8:9, 3, rep(NA, 3), 6, NA,
+                9, NA, 3, 5, NA, 1, rep(NA, 4),
+                5, rep(NA, 5), 1, rep(NA, 4),
+                4, NA, 6, 3, NA, 5,
+                NA, 7, rep(NA, 3), 8:9, 3, rep(NA, 4),
+                6, 1, NA, 2, NA, 8,
+                rep(NA, 4), NA, NA, 1, NA, NA)
 
 
 
