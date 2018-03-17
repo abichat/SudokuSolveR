@@ -46,7 +46,7 @@ V_hardcoremultiple <- c(NA, NA, NA, NA, NA, rep(NA, 4),
 ### Plot matrix from the vector form (vec) ----
 ## Display the grid in a matrix form
 
-plot_matrix <- function(vec) {
+plot_matrix <- function(vec, vec_na = rep(NA, length(vec)), fillcolor = "lightblue") {
   
   # Need to create a function with this snip
   
@@ -54,9 +54,14 @@ plot_matrix <- function(vec) {
     vec <- vec$vector
   }
   
-  df <- data.frame(vec = vec, X = 0:80 %/% 9, Y = 9 - 0:80 %% 9)
+  df <- data.frame(vec = vec, X = 0:80 %/% 9, Y = 9 - 0:80 %% 9,
+                   na = is.na(vec_na))
   
   ggplot(df, aes(X, Y)) +
+    geom_rect(aes(xmin = X - 0.5, xmax = X + 0.5, ymin = Y - 0.5, ymax = Y + 0.5,
+                  fill = na), alpha = 0.5) +
+    scale_fill_manual(values = c("white", fillcolor)) +
+    guides(fill = FALSE) +
     geom_text(aes(label = vec), na.rm = TRUE) +
     geom_vline(xintercept = c(2.5, 5.5)) +
     geom_hline(yintercept = c(3.5, 6.5)) +
@@ -64,6 +69,8 @@ plot_matrix <- function(vec) {
     theme_void() 
 }
 
+
+plot_matrix(V_realgrid, V_realgrid)
 
 ### Create indexes for columns, rows and squares ----
 ## Lists of vector elements belonging to each rows, columns and squares
