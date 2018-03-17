@@ -11,6 +11,7 @@ grid <-
             df_empty_cases = NULL,
             children = NULL,
             solutions = NULL,
+            original_vec = NULL,
             
             initialize = function(vec = NA){
               
@@ -114,13 +115,32 @@ grid <-
               # Create whole tree and pick solutions in the original matrix attributes
               
               self$solutions <- list()
+              self$original_vec <- self$vec 
+              # A changer pour un enfant unique de self et créer l'arbre à partir de celui-ci
               self$create_tree(self)
+              
+            },
+            
+            print = function(){
+              
+              # Print method 
+              
+              base::print(matrix(self$vec, ncol = 9))
+            },
+            
+            announce_solutions = function(){
+              
+              # Display all solutions with an introducing sentence
+              
+              if (is.null(self$solutions)) {
+                self$solve()
+              }
               
               if (length(self$solutions) == 0) {
                 base::print("No solution found")
               } else if (length(self$solutions) == 1) {
                 base::print("One solution found:")
-                self$solutions[[1]]$print()
+                self$solutions[[1]]
               } else {
                 base::print(paste(length(self$solutions), "solutions found:"))
                 for (i in self$solutions) {
@@ -129,13 +149,17 @@ grid <-
               }
             },
             
-            print = function(){
+            plot_solution = function(i = 1, fillcolor = "lightblue"){
               
-              # Print method 
+              # Plot solutions with background color for discovered numbers
               
-              base::print(matrix(self$vec, ncol = 9))
-              base::print(plot_matrix(self$vec))       # From function files
-              # base::print(paste("Statut:", self$status))
+              if (is.null(self$solutions)) {
+                self$solve()
+              }
+              
+              if (i <= length(self$solutions))  {
+                plot_matrix(self$solutions[[i]]$vec, self$original_vec, fillcolor)
+              }
             }
           )
           )
@@ -144,13 +168,23 @@ grid <-
 # Tests 
 
 G5 <- grid$new(V_hardcore)
-G5
+G5$vec
 G5$solve() 
+G5$announce_solutions()
+G5$vec
+G5$original_vec
+G5$plot_solution()
 
 G6 <- G5$children[[1]]
 G6
-G6$solve()
+G6$announce_solutions()
+G6$plot_solution()
 
 G7 <- grid$new(V_hardcoremultiple)
 G7
 G7$solve()
+G7$announce_solutions()
+G7$plot_solution()
+G7$plot_solution(2)
+G7$plot_solution(3)
+
