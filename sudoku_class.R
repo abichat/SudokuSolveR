@@ -11,7 +11,6 @@ grid <-
             df_empty_cases = NULL,
             children = NULL,
             solutions = NULL,
-            original_vec = NULL,
             
             initialize = function(vec = NA){
               
@@ -90,9 +89,9 @@ grid <-
             
             create_tree = function(other){
               
-              # Creat the whole tree from the original matrix
+              # Creat the whole tree from self
               # Each node is an ambiguous matrix
-              # Save correct grids as an argument of the original matrix
+              # Save correct grids as an argument of the other matrix
               
               while (self$status == "unambiguous") {
                 self$fill_unambiguous()
@@ -112,12 +111,12 @@ grid <-
             
             solve = function(){
               
-              # Create whole tree and pick solutions in the original matrix attributes
+              # Create a children identical to the self grid
+              # Create whole tree from the created children (not to change the original vector)
               
               self$solutions <- list()
-              self$original_vec <- self$vec 
-              # A changer pour un enfant unique de self et créer l'arbre à partir de celui-ci
-              self$create_tree(self)
+              self$children <- list(grid$new(self$vec))
+              self$children[[1]]$create_tree(self)
               
             },
             
@@ -158,7 +157,7 @@ grid <-
               }
               
               if (i <= length(self$solutions))  {
-                plot_matrix(self$solutions[[i]]$vec, self$original_vec, fillcolor)
+                plot_matrix(self$solutions[[i]]$vec, self$vec, fillcolor)
               }
             }
           )
@@ -172,10 +171,9 @@ G5$vec
 G5$solve() 
 G5$announce_solutions()
 G5$vec
-G5$original_vec
 G5$plot_solution()
 
-G6 <- G5$children[[1]]
+G6 <- G5$children[[1]]$children[[1]]
 G6
 G6$announce_solutions()
 G6$plot_solution()
