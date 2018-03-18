@@ -46,7 +46,7 @@ V_hardcoremultiple <- c(NA, NA, NA, NA, NA, rep(NA, 4),
 ### Plot matrix from the vector form (vec) ----
 ## Display the grid in a matrix form
 
-plot_matrix <- function(vec, vec_na = rep(NA, length(vec)), fillcolor = "lightblue") {
+plot_matrix <- function(vec, vec_na = rep(NA, length(vec)), fillcolor = "#03a9f4") {
   
   # Need to create a function with this snip
   
