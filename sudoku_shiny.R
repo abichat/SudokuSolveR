@@ -31,22 +31,28 @@ my_material_column <- function(vecchnumber){
 
 # Wrap shinymaterial apps in material_page
 ui <- material_page(
+  nav_bar_fixed = TRUE,
   title = "SudokuSolver",
+  material_side_nav(background_color = "grey lighten-4"),
+  # align = "left",
   nav_bar_color = my_color,
   tags$h4("Fill your grid:"),
   material_row(
     material_column(width = 1),
-    my_material_column(1:9),
-    my_material_column(10:18),
-    my_material_column(19:27),
-    material_column(width = 1),
-    my_material_column(28:36),
-    my_material_column(37:45),
-    my_material_column(46:54),
-    material_column(width = 1),
-    my_material_column(55:63),
-    my_material_column(64:72),
-    my_material_column(73:81)
+    material_column(width = 11, align = "center",
+      # material_column(width = 1),
+      my_material_column(1:9),
+      my_material_column(10:18),
+      my_material_column(19:27),
+      material_column(width = 1),
+      my_material_column(28:36),
+      my_material_column(37:45),
+      my_material_column(46:54),
+      material_column(width = 1),
+      my_material_column(55:63),
+      my_material_column(64:72),
+      my_material_column(73:81)
+      )
     ),
   br(),
   material_row(
