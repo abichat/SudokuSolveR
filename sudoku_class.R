@@ -167,6 +167,7 @@ grid <-
 # Tests 
 
 G5 <- grid$new(V_hardcore)
+plot_matrix(G5$vec)
 G5$vec
 G5$solve() 
 G5$announce_solutions()

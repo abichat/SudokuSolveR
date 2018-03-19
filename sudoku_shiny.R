@@ -32,7 +32,7 @@ my_material_column <- function(vecchnumber){
 # Wrap shinymaterial apps in material_page
 ui <- material_page(
   nav_bar_fixed = TRUE,
-  title = "SudokuSolver",
+  title = "SudokuSolveR",
   material_side_nav(background_color = "grey lighten-4"),
   # align = "left",
   nav_bar_color = my_color,
