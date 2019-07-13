@@ -114,9 +114,19 @@ grid <-
               # Create a children identical to the self grid
               # Create whole tree from the created children (not to change the original vector)
               
-              self$solutions <- list()
-              self$children <- list(grid$new(self$vec))
-              self$children[[1]]$create_tree(self)
+              if(all(is.na(self$vec))){
+                print("haah")
+                self$solutions <- list(grid$new(rep(0, 81)))
+              } else {
+                if(all(is.na(self$vec))){
+                  self$solutions <- list()
+                } else {
+                self$solutions <- list()
+                self$children <- list(grid$new(self$vec))
+                self$children[[1]]$create_tree(self)
+                }
+              }
+              
               
             },
             
@@ -152,6 +162,7 @@ grid <-
               
               # Plot solutions with background color for discovered numbers
               
+              
               if (is.null(self$solutions)) {
                 self$solve()
               }
@@ -164,26 +175,27 @@ grid <-
           )
 
 
-# Tests 
-
-G5 <- grid$new(V_hardcore)
-plot_matrix(G5$vec)
-G5$vec
-G5$solve() 
-G5$announce_solutions()
-G5$vec
-G5$plot_solution()
-
-G6 <- G5$children[[1]]$children[[1]]
-G6
-G6$announce_solutions()
-G6$plot_solution()
-
-G7 <- grid$new(V_hardcoremultiple)
-G7
-G7$solve()
-G7$announce_solutions()
-G7$plot_solution()
-G7$plot_solution(2)
-G7$plot_solution(3)
-
+### Tests
+# 
+# G5 <- grid$new(V_hardcore)
+# plot_matrix(G5$vec)
+# G5$vec
+# G5$solve()
+# G5$announce_solutions()
+# G5$vec
+# G5$plot_solution()
+# 
+# G6 <- G5$children[[1]]$children[[1]]
+# G6
+# G6$announce_solutions()
+# G6$plot_solution()
+# 
+# G7 <- grid$new(V_hardcoremultiple)
+# G7
+# plot_matrix(G7$vec)
+# G7$solve()
+# G7$announce_solutions()
+# G7$plot_solution()
+# G7$plot_solution(2)
+# G7$plot_solution(3)
+# 
